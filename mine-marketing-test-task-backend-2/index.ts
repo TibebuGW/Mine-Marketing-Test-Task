@@ -1,7 +1,7 @@
-const express = require('express');
-const cors = require('cors');
-const authRoutes = require('./routes/authRoutes');
-const connectDB = require('./config/db');
+import express from 'express';
+import cors from 'cors';
+import authRoutes from './routes/authRoute';
+import connectDB from './config/db';
 
 // Connect to the MongoDB database through the function exported in config/db
 connectDB();

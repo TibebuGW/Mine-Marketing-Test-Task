@@ -2,6 +2,7 @@ import { Schema, model, Document } from 'mongoose';
 import jwt from 'jsonwebtoken';
 
 export interface IUser extends Document {
+  _id: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -17,7 +18,7 @@ const userSchema = new Schema<IUser>({
 });
 
 userSchema.methods.generateAuthToken = function (userId: string) {
-  const token = jwt.sign({ userId: userId }, process.env.JWT_SCRET);
+  const token = jwt.sign({ userId: userId }, `${process.env.JWT_SCRET}` , { expiresIn: '365d'});
   return token;
 };
 
