@@ -22,7 +22,8 @@ module.exports = {
       black: 'black',
       white: 'white',
       grey: 'grey',
-      blue: 'blue'
+      blue: 'blue',
+      red: 'red'
     },
     gradientColorStops: {
       'blue-purple': {
