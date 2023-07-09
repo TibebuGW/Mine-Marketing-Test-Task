@@ -16,7 +16,8 @@ module.exports = {
       white: '#ffffff',
       grey: '#e1e4f0',
       darkGrey: "#7c7c80",
-      black: '#000000'
+      black: '#000000',
+      red: '#c23a4e'
     },
     textColor: {
       black: 'black',

@@ -34,7 +34,6 @@ export const Signup = () => {
   });
 
   const handleSubmit = async (values: typeof initialValues) => {
-    console.log("HEREEEEEEEEE", `http://localhost:5000/api/auth/register`)
     try {
       setLoading(true);
       const response = await axios.post(
@@ -44,6 +43,7 @@ export const Signup = () => {
       
       console.log("success")
       if (response?.data?.success) {
+        
       }
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
