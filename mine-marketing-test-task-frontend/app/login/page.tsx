@@ -7,7 +7,7 @@ import * as Yup from "yup";
 import { AiFillWarning } from "react-icons/ai";
 import Spinner from "../components/spinner/spinner";
 import { AxiosError } from "axios";
-export const Login = () => {
+export default function Login(){
   const [loading, setLoading] = useState<boolean>(false);
   const [loginError, setLoginError] = useState<String>("");
 
@@ -105,5 +105,3 @@ export const Login = () => {
     </div>
   );
 };
-
-export default Login;

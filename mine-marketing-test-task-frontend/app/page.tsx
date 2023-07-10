@@ -26,8 +26,8 @@ export default function Home() {
     method: 'GET',
     url: 'https://wft-geo-db.p.rapidapi.com/v1/geo/adminDivisions',
     headers: {
-      'X-RapidAPI-Key': process.env.RAPID_API_KEY,
-      'X-RapidAPI-Host': process.env.RAPID_API_HOST
+      'X-RapidAPI-Key': process.env.NEXT_PUBLIC_RAPID_API_KEY,
+      'X-RapidAPI-Host': process.env.NEXT_PUBLIC_RAPID_API_HOST
     }
   };
 
@@ -44,7 +44,7 @@ export default function Home() {
   };
   
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("hereeeeeeeeeeee",process.env.RAPID_API_KEY)
+    console.log("hereeeeeeeeeeee is",`${process.env.NEXT_PUBLIC_RAPID_API_KEY}`)
     event.preventDefault();
     setFormValues({
       ...formValues,

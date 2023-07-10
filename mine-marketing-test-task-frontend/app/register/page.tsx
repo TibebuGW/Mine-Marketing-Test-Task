@@ -7,7 +7,7 @@ import { AiFillWarning } from "react-icons/ai";
 import { useRouter } from "next/router";
 import * as Yup from "yup";
 import Spinner from "../components/spinner/spinner";
-export const Signup = () => {
+export default function Register() {
   const [loading, setLoading] = useState<boolean>(false);
   const [registerError, setRegisterError] = useState<String>("");
 
@@ -170,5 +170,3 @@ export const Signup = () => {
     </div>
   );
 };
-
-export default Signup;
