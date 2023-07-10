@@ -1,6 +1,8 @@
+import { IUser } from "../../../types/userType";
 import axios, { AxiosError } from "axios";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+
 
 export const options: NextAuthOptions = {
   providers: [
@@ -16,7 +18,11 @@ export const options: NextAuthOptions = {
               email: credentials?.email,
               password: credentials?.password
             });
-            return response.data.user
+
+            return {
+              ...response.data.user,
+              accessToken: response.data.token
+            }
 
           } catch (error) {
             if (error instanceof AxiosError) {
@@ -30,15 +36,19 @@ export const options: NextAuthOptions = {
   ],
   pages: {
     signIn: "/login",
-    error: "/login"
-  },
-  session: {
-    strategy: "jwt",
+    error: "/login",
+    signOut: "/login"
   },
   callbacks: {
-    jwt: async ({ user, token }) => {
-      user && (token.user = user);
-      return token;
+    jwt: async ({token, user}) => {
+      user && (token.user = user)
+      return token
     },
-  },
+    session: async({session, token}) => {
+      const user = token.user as IUser
+      session.user = user
+      return session
+    }
+  }
+  
 };

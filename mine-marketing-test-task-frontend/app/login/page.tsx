@@ -2,12 +2,17 @@
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import Link from "next/link";
 import { useState } from "react";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import * as Yup from "yup";
 import { AiFillWarning } from "react-icons/ai";
 import Spinner from "../components/spinner/spinner";
-import { AxiosError } from "axios";
+import { redirect } from "next/navigation";
 export default function Login(){
+  const { data: session } = useSession();
+
+  if (session){
+    redirect("/")
+  }
   const [loading, setLoading] = useState<boolean>(false);
   const [loginError, setLoginError] = useState<String>("");
 
@@ -30,14 +35,17 @@ export default function Login(){
     const result = await signIn("credentials", {
       email: values.email,
       password: values.password,
-      redirect: false, // Prevent automatic redirect after successful login
+      redirect: true, 
+      callbackUrl: "/"
     });
     if (result?.error) {
       setLoginError(result.error);
+      setLoading(false)
     } else {
       console.log("Login successful!");
+      setLoading(false)
+      redirect("/register")
     }
-    setLoading(false)
   };
 
   return (
@@ -86,12 +94,12 @@ export default function Login(){
             <p className="mt-3 text-blue">Forgot Password?</p>
             <button
               type="submit"
-              className={`py-2 px-5 my-3 text-secondary rounded-md w-full bg-lightPrimary  ${
+              className={`py-2 px-5 my-3 text-secondary rounded-md w-full bg-lightPrimary text-white ${
                 !loading ? "hover:bg-darkPrimary" : ""
               }`}
               disabled={loading}
             >
-              {loading ? <Spinner /> : <h1>Register</h1>}
+              {loading ? <Spinner /> : <h1>Login</h1>}
             </button>
             <p className="mt-3 text-center text-black">
               Don&apos;t have an account?{" "}

@@ -2,12 +2,9 @@
 
 import { SessionProvider } from 'next-auth/react'
 
-export default function AuthProvider({ children }: {
-    children: React.ReactNode
-}) {
-    return (
-        <SessionProvider>
-            {children}
-        </SessionProvider>
-    )
+
+const AuthProvider = ({children}: any) => {
+    return <SessionProvider>{children}</SessionProvider>
 }
+
+export default AuthProvider
