@@ -14,11 +14,12 @@ export const options: NextAuthOptions = {
       },
       authorize: async (credentials) => {
         try {
-            const response = await axios.post(`${process.env.BASE_URL}auth/login`, {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}auth/login`, {
               email: credentials?.email,
               password: credentials?.password
             });
 
+            console.log(response.data.user)
             return {
               ...response.data.user,
               accessToken: response.data.token
@@ -46,8 +47,12 @@ export const options: NextAuthOptions = {
     },
     session: async({session, token}) => {
       const user = token.user as IUser
-      session.user = user
-      return session
+      return { ...session,
+        user: { ...session.user,
+          name: `${user.firstName} ${user.lastName}`,
+          email: user.email,
+        }
+      }
     }
   }
   

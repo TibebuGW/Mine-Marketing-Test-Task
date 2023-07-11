@@ -37,7 +37,7 @@ export default function Register() {
     try {
       setLoading(true);
       const response = await axios.post(
-        `${process.env.BASE_URL}auth/register`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}auth/register`,
         values
       );
       

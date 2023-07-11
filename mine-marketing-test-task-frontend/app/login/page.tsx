@@ -32,12 +32,14 @@ export default function Login(){
 
   const handleSubmit = async (values: typeof initialValues) => {
     setLoading(true)
+    console.log(values)
     const result = await signIn("credentials", {
       email: values.email,
       password: values.password,
       redirect: true, 
       callbackUrl: "/"
     });
+    console.log("resultttt", result)
     if (result?.error) {
       setLoginError(result.error);
       setLoading(false)
