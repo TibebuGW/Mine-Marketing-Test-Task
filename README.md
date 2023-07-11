@@ -44,4 +44,4 @@ The frontend of the project can be found in the `mine-marketing-test-task-fronte
 
 ## Schema Definitions
 
-The project uses MongoDB as the database. The database has two documents: user and result.
+The project uses MongoDB as the database. The database has two documents: User and Result. The User schema has the first name, last name, email, and password fields while the Result schema has user email, country name, capital city, country code, and country phone code fields.
