@@ -2,9 +2,10 @@
   "name": "mine-marketing-test-task-backend-2",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "rimraf dist && npx tsc",
+    "prestart": "npm run build",
     "start": "node dist/index.js",
     "preserve": "npm run build",
     "serve": "npx tsc -w & nodemon dist/index.js"
