@@ -1,8 +1,7 @@
 import { Schema, model, Document, ObjectId } from "mongoose";
 
 export interface IResult extends Document {
-  _id: string;
-  userId: ObjectId;
+  userEmail: string;
   phoneCode: string;
   capitalCity: string;
   code: string;
@@ -12,7 +11,7 @@ export interface IResult extends Document {
 
 const resultSchema = new Schema<IResult>(
   {
-    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    userEmail: { type: String, required: true },
     code: { type: String, required: true },
     phoneCode: { type: String, required: true },
     capitalCity: { type: String, required: true },

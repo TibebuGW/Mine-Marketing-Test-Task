@@ -3,12 +3,12 @@ import Result from '../models/Result';
 
 export const saveResult = async (req: Request, res: Response) => {
   try {
-    const { userId, countryCode, phoneCode, capitalCity, currencyCode, name } = req.body;
+    const { userEmail, code, phoneCode, capitalCity, currencyCode, name } = req.body;
 
     // Create a new result instance
     const newResult = new Result({
-      userId,
-      countryCode,
+      userEmail,
+      code,
       phoneCode,
       capitalCity,
       currencyCode,
@@ -27,10 +27,9 @@ export const saveResult = async (req: Request, res: Response) => {
 
 export const getResultsByUser = async (req: Request, res: Response) => {
   try {
-    const { userId } = req.params;
-
+    const { userEmail } = req.query;
     // Find all results associated with the specified user
-    const results = await Result.find({ userId });
+    const results = await Result.find({ userEmail: userEmail });
 
     res.status(200).json(results);
   } catch (error) {
