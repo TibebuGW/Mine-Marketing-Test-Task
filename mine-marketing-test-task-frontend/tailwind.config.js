@@ -19,13 +19,14 @@ module.exports = {
       darkGrey: "#7c7c80",
       black: '#000000',
       red: '#c23a4e',
+      green: '#2b9447'
     },
     textColor: {
       black: 'black',
       white: 'white',
       grey: 'grey',
       blue: 'blue',
-      red: 'red'
+      red: 'red',
     },
     gradientColorStops: {
       'blue-purple': {

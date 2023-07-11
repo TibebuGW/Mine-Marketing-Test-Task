@@ -3,13 +3,16 @@ import axios, { AxiosError } from "axios";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import Link from "next/link";
 import { useState } from "react";
-import { AiFillWarning } from "react-icons/ai";
-import { useRouter } from "next/router";
+import { AiFillWarning, AiOutlineCheckCircle } from "react-icons/ai";
 import * as Yup from "yup";
 import Spinner from "../components/spinner/spinner";
+import { useRouter } from "next/navigation";
 export default function Register() {
   const [loading, setLoading] = useState<boolean>(false);
   const [registerError, setRegisterError] = useState<String>("");
+  const [successMessage, setSuccessMessage] = useState<String>("");
+
+  const router = useRouter();
 
   const initialValues = {
     firstName: "",
@@ -36,18 +39,22 @@ export default function Register() {
   const handleSubmit = async (values: typeof initialValues) => {
     try {
       setLoading(true);
+      setRegisterError("");
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}auth/register`,
         values
       );
       
-      console.log("success")
-      if (response?.data?.success) {
-        
-      }
+      setSuccessMessage("User account created successfully. Redirecting to login page...")
+      setTimeout(() => {
+        setSuccessMessage("")
+        router.push("/login");
+      }, 5000);
+
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
         const errorMessage = error?.response?.data?.message;
+        console.log(error);
         setRegisterError(errorMessage);
       }
     }
@@ -70,6 +77,14 @@ export default function Register() {
                   <AiFillWarning />
                 </span>
                 <span className="pa-0">{registerError}</span>
+              </p>
+            )}
+            {successMessage != "" && (
+              <p className="px-4 py-4 mt-4 flex bg-green text-white rounded-md">
+                <span className="pt-1 pr-5">
+                  <AiOutlineCheckCircle />
+                </span>
+                <span className="pa-0">{successMessage}</span>
               </p>
             )}
 
@@ -148,15 +163,12 @@ export default function Register() {
             </div>
             <button
               type="submit"
-              className={`py-2 px-5 my-3 text-secondary rounded-md w-full bg-lightPrimary text-white  ${!loading ?  'hover:bg-darkPrimary transition duration-500': ''}`}
+              className={`py-2 px-5 my-3 text-secondary rounded-md w-full bg-lightPrimary text-white  ${
+                !loading ? "hover:bg-darkPrimary transition duration-500" : ""
+              }`}
               disabled={loading}
             >
-              {
-                loading ? 
-                <Spinner />
-                :
-                <h1>Register</h1>
-              } 
+              {loading ? <Spinner /> : <h1>Register</h1>}
             </button>
             <p className="my-3 text-center text-black">
               Already have an account?{" "}
@@ -169,4 +181,4 @@ export default function Register() {
       </div>
     </div>
   );
-};
+}
