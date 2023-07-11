@@ -11,8 +11,6 @@ Project Description: A brief description of the project.
 - [Backend](#backend)
 - [Frontend](#frontend)
 - [Schema Definitions](#schema-definitions)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Installation
 
