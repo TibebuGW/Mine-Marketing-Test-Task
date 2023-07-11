@@ -11,7 +11,7 @@ import CountryCard from "./components/countryCard/countrycard";
 import { addResult } from "../redux/features/queryResult-slice";
 import PreviousResults from "./components/previousResults/previousResults";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "../redux/store";
+import { AppDispatch, useAppSelector } from "../redux/store";
 
 export default function Home() {
   const { data: session } = useSession({
@@ -22,6 +22,8 @@ export default function Home() {
   });
 
   const dispatch = useDispatch<AppDispatch>();
+  const searchResults = useAppSelector((state) => state.searchResultsReducer);
+  console.log("resultsssss", searchResults.results)
 
   // console.log("hereeeeeeeeee", session);
   const [loading, setLoading] = useState<boolean>(false);
@@ -103,9 +105,7 @@ export default function Home() {
       setLoading(true);
       setQueryError("");
       var response = await axios.request(options);
-      if (response.data.data.name === ""){
-        response = await axios.request(options);
-      }
+      
       setQueryResult({
         phoneCode: response.data.data.callingCode,
         capitalCity: response.data.data.capital,
@@ -155,7 +155,7 @@ export default function Home() {
   };
 
   return (
-    <main className={`flex bg-gradient-to-r from-blue-purple-0 to-blue-purple-100 flex-col items-center justify-start p-20 w-full ${!queryResult.name && !showPreviousResults ? 'h-screen': 'h-full'}`}>
+    <main className={`flex bg-gradient-to-r from-blue-purple-0 to-blue-purple-100 flex-col items-center justify-start p-20 w-full ${(!queryResult.name && !showPreviousResults) || (showPreviousResults && !searchResults.results.length) ? 'h-screen': 'h-full'}`}>
       <div className="flex flex-row my-6">
         <h1 className="my-5 font-bold text-2xl mr-5">
           {`Welcome ${session?.user?.name ? session?.user?.name : ""}`}
@@ -230,8 +230,8 @@ export default function Home() {
         </div>
       </form>
       {queryResult.name && (
-        <div className="w-fit">
-          <p className="text-2xl my-3">
+        <div className="flex flex-col items-center justify-center">
+          <p className="my-5 font-bold text-2xl">
             Search Result
           </p>
             <CountryCard countryDetail={queryResult} />
