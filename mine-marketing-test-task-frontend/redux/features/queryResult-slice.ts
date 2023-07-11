@@ -18,18 +18,21 @@ const initialState: SearchResultsState = {
   results: [],
 };
 
-const searchResultsSlice = createSlice({
+const searchResults = createSlice({
   name: "searchResults",
   initialState,
   reducers: {
     addResult: (state, action: PayloadAction<SearchResult>) => {
-      state.results.push(action.payload);
+      const existingResult = state.results.find(result => result.name === action.payload.name);
+      if (!existingResult) {
+        state.results.push(action.payload);
+      }
     },
   },
 });
 
-export const {addResult} = searchResultsSlice.actions
+export const {addResult} = searchResults.actions
 
-export default searchResultsSlice.reducer
+export default searchResults.reducer
 
-export const getAllResults = (state: RootState) => state.searchResults.results
+export const getAllResults = (state: RootState) => state.searchResultsReducer.results

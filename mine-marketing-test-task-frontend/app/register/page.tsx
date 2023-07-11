@@ -148,7 +148,7 @@ export default function Register() {
             </div>
             <button
               type="submit"
-              className={`py-2 px-5 my-3 text-secondary rounded-md w-full bg-lightPrimary text-white  ${!loading ?  'hover:bg-darkPrimary': ''}`}
+              className={`py-2 px-5 my-3 text-secondary rounded-md w-full bg-lightPrimary text-white  ${!loading ?  'hover:bg-darkPrimary transition duration-500': ''}`}
               disabled={loading}
             >
               {

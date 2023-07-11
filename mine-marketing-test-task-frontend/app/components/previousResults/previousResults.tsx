@@ -1,6 +1,6 @@
 import { QueryResult } from "@/app/types/QueryResultType";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../../../redux/store";
 import CountryCard from "../countryCard/countrycard";
 
 interface propType {
@@ -9,18 +9,18 @@ interface propType {
 
 export default function PreviousResults(props: propType) {
   const [previousResults, setPreviousResults] = useState<QueryResult[]>([]);
-  const searchResults = useSelector((state: any) => state.searchResults);
-  console.log("Search Resultssssss", searchResults)
+  const searchResults = useAppSelector((state) => state.searchResultsReducer);
 
-  useEffect(() =>{
-      setPreviousResults(searchResults.results);
-  }, [searchResults])
+  useEffect(() => {
+    const newResults = searchResults.results.filter(result => !previousResults.includes(result));
+    setPreviousResults(previousResults.concat(newResults));
+  }, [searchResults]);
 
   return (
-    <div className="w-[70%] flex items-center justify-center">
+    <div className="w-full flex items-center justify-center">
       <div className="py-7">
         <div>
-          <p className="my-2 font-bold text-2xl">Previous Results</p>
+          <p className="my-2 font-bold text-2xl">Previous Search Results</p>
         </div>
         {props.fetchingPreviousResults ? (
           <div className="flex items-center justify-center">

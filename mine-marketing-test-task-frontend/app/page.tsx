@@ -9,8 +9,9 @@ import { QueryResult, QueryResultDatabase } from "./types/QueryResultType";
 import { AiFillWarning } from "react-icons/ai";
 import CountryCard from "./components/countryCard/countrycard";
 import { addResult } from "../redux/features/queryResult-slice";
-import { useSelector } from "react-redux";
 import PreviousResults from "./components/previousResults/previousResults";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../redux/store";
 
 export default function Home() {
   const { data: session } = useSession({
@@ -19,6 +20,8 @@ export default function Home() {
       redirect("/login");
     },
   });
+
+  const dispatch = useDispatch<AppDispatch>();
 
   // console.log("hereeeeeeeeee", session);
   const [loading, setLoading] = useState<boolean>(false);
@@ -61,8 +64,16 @@ export default function Home() {
 
       const allResults = response.data;
 
-      for (var i = 0; i < allResults; i++) {
-        dispatch(addResult(allResults[i]));
+      for (var i = 0; i < allResults.length; i++) {
+        const payload = {
+          phoneCode: allResults[i].phoneCode,
+          capitalCity: allResults[i].capitalCity,
+          code: allResults[i].code,
+          currencyCode: allResults[i].currencyCode,
+          name: allResults[i].name,
+          userEmail: session?.user?.email as string,
+        };
+        dispatch(addResult(payload));
       }
       setFetchingPreviousResults(false);
       setShowPreviousResults(true);
@@ -78,14 +89,12 @@ export default function Home() {
         `${process.env.NEXT_PUBLIC_BASE_URL}result/saveresult`,
         payload
       );
-
       if (response.status === 200) {
         dispatch(addResult(payload));
       }
       console.log("Result saved successfully.");
     } catch (error) {
       console.error("Error saving search result:", error);
-      setQueryError("Error saving search result.");
     }
   };
 
@@ -93,8 +102,10 @@ export default function Home() {
     try {
       setLoading(true);
       setQueryError("");
-      const response = await axios.request(options);
-      console.log(response.data);
+      var response = await axios.request(options);
+      if (response.data.data.name === ""){
+        response = await axios.request(options);
+      }
       setQueryResult({
         phoneCode: response.data.data.callingCode,
         capitalCity: response.data.data.capital,
@@ -104,11 +115,17 @@ export default function Home() {
       });
 
       const resultData = {
-        ...queryResult,
+        phoneCode: response.data.data.callingCode,
+        capitalCity: response.data.data.capital,
+        code: response.data.data.code,
+        currencyCode: response.data.data.currencyCodes,
+        name: response.data.data.name,
         userEmail: session?.user?.email,
       };
-
       saveUserResult(resultData);
+      if (showPreviousResults) {
+        fetchAllResults();
+      }
     } catch (error) {
       if (error instanceof AxiosError) {
         setQueryResult({
@@ -118,8 +135,7 @@ export default function Home() {
           currencyCode: [],
           name: "",
         });
-        const errorMessage = error?.response?.data?.message;
-        setQueryError(errorMessage);
+        setQueryError("Not a valid country code");
       }
     }
     setLoading(false);
@@ -139,20 +155,20 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-start p-20 w-full">
+    <main className={`flex bg-gradient-to-r from-blue-purple-0 to-blue-purple-100 flex-col items-center justify-start p-20 w-full ${!queryResult.name && !showPreviousResults ? 'h-screen': 'h-full'}`}>
       <div className="flex flex-row my-6">
         <h1 className="my-5 font-bold text-2xl mr-5">
           {`Welcome ${session?.user?.name ? session?.user?.name : ""}`}
         </h1>
         <button
-          className="px-5 py-0 mx-5 bg-lightPrimary hover:bg-darkPrimary rounded-xl text-white"
+          className="px-5 py-0 mx-5 bg-lightSecondary hover:bg-darkSecondary rounded-xl text-white transition duration-500"
           type="submit"
           onClick={() => fetchAllResults()}
         >
           See Previous Results
         </button>
         <button
-          className="px-5 py-0 bg-lightPrimary hover:bg-darkPrimary rounded-xl text-white"
+          className="px-5 py-0 bg-lightPrimary hover:bg-darkPrimary rounded-xl text-white transition duration-500"
           type="submit"
           onClick={() => signOut()}
         >
@@ -190,7 +206,7 @@ export default function Home() {
           <span className="pt-1 pr-5">
             <AiFillWarning />
           </span>
-          <span className="pa-0">Not a valid Input</span>
+          <span className="pa-0">{queryError} </span>
         </p>
       )}
       <form className="w-full" onSubmit={handleSubmit}>
@@ -204,7 +220,7 @@ export default function Home() {
             onChange={handleChange}
           />
           <button
-            className={`p-5 bg-lightPrimary hover:bg-darkPrimary rounded-xl text-white ${
+            className={`p-5 bg-lightPrimary hover:bg-darkPrimary rounded-xl text-white transition duration-500 ${
               loading ? "px-8" : ""
             }`}
             type="submit"
@@ -214,8 +230,11 @@ export default function Home() {
         </div>
       </form>
       {queryResult.name && (
-        <div className="flex flex-row">
-          <CountryCard countryDetail={queryResult} />
+        <div className="w-fit">
+          <p className="text-2xl my-3">
+            Search Result
+          </p>
+            <CountryCard countryDetail={queryResult} />
         </div>
       )}
       {showPreviousResults ? (
@@ -225,7 +244,4 @@ export default function Home() {
       )}
     </main>
   );
-}
-function dispatch(arg0: any) {
-  throw new Error("Function not implemented.");
 }

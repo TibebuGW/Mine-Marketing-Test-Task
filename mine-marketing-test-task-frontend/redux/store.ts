@@ -1,13 +1,16 @@
 import {configureStore} from '@reduxjs/toolkit'
 import searchResultsReducer from './features/queryResult-slice';
+import { TypedUseSelectorHook, useSelector } from 'react-redux';
 
 export const store = configureStore({
     reducer: {
-        searchResults: searchResultsReducer,
+        searchResultsReducer: searchResultsReducer,
     }
 })
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+
+export const useAppSelector : TypedUseSelectorHook<RootState> = useSelector;
 
 export default store;

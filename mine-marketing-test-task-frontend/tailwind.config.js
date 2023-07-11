@@ -12,12 +12,13 @@ module.exports = {
     colors: {
       lightPrimary: '#2c5ec9',
       darkPrimary: '#02287a',
-      gradientPrimary: '',
+      lightSecondary: '#5128b0',
+      darkSecondary: '#30107a',
       white: '#ffffff',
       grey: '#e1e4f0',
       darkGrey: "#7c7c80",
       black: '#000000',
-      red: '#c23a4e'
+      red: '#c23a4e',
     },
     textColor: {
       black: 'black',
