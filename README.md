@@ -14,11 +14,11 @@ Project Description: A brief description of the project.
 
 ## Installation
 
-Include step-by-step instructions on how to install and set up the project. Provide any prerequisites or dependencies required.
+To install the necessary dependencies, go to each directory (frontend or backend) and run `npm install`. To run the backend run `npm run start`. This command will first build the entire backend, transpiling it, saves all the files in **dist/** directory, and then finally runs the backend. The frontend can be run with just `npm run dev`. This simply runs the NextJS app. Keep in mind that you'll need to use your own `.env` for the backend and `.env.local` for the frontend.  
 
 ## Usage
 
-Explain how to use the project and any important features. Provide examples or screenshots if applicable.
+To use the app, you'll first have to register on the **/register** page. After registering, you'll be redirected to the **/login** page where you'll log in. After that enter the right country code and you'll see the search result. You can also see your previous search results.
 
 ## Technologies
 
